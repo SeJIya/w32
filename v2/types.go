@@ -644,6 +644,20 @@ type MODULEENTRY32 struct {
 	SzExePath    [MAX_PATH]uint16
 }
 
+// https://docs.microsoft.com/en-us/windows/win32/api/tlhelp32/ns-tlhelp32-processentry32
+type PROCESSENTRY32 struct {
+	Size            uint32
+	CntUsage        uint32
+	ProcessID       uint32
+	DefaultHeapID   uintptr
+	ModuleID        uint32
+	CntThreads      uint32
+	ParentProcessID uint32
+	PcPriClassBase  int32
+	Flags           uint32
+	SzExeFile       [MAX_PATH]uint16
+}
+
 // http://msdn.microsoft.com/en-us/library/windows/desktop/ms724284.aspx
 type FILETIME struct {
 	DwLowDateTime  uint32
@@ -1284,14 +1298,14 @@ type WINDOWPOS struct {
 }
 
 type WINDOWINFO struct {
-	Cbsize uint32
-	RcWindow RECT
-	RcClient RECT
-	DwStyle uint32
-	DwExStyle uint32
-	DwWindowStatus uint32
+	Cbsize          uint32
+	RcWindow        RECT
+	RcClient        RECT
+	DwStyle         uint32
+	DwExStyle       uint32
+	DwWindowStatus  uint32
 	CxWindowBorders uint32
 	CyWindowBorders uint32
-	AtomWindowType uint16
+	AtomWindowType  uint16
 	WCreatorVersion uint16
 }

@@ -383,6 +383,8 @@ var (
 	createToolhelp32Snapshot   = kernel32.NewProc("CreateToolhelp32Snapshot")
 	module32First              = kernel32.NewProc("Module32FirstW")
 	module32Next               = kernel32.NewProc("Module32NextW")
+	process32Firs              = kernel32.NewProc("Process32FirstW")
+	process32Next              = kernel32.NewProc("Process32NextW")
 	getSystemTimes             = kernel32.NewProc("GetSystemTimes")
 	getConsoleScreenBufferInfo = kernel32.NewProc("GetConsoleScreenBufferInfo")
 	setConsoleTextAttribute    = kernel32.NewProc("SetConsoleTextAttribute")
@@ -3770,6 +3772,22 @@ func Module32Next(snapshot HANDLE, me *MODULEENTRY32) bool {
 	ret, _, _ := module32Next.Call(
 		uintptr(snapshot),
 		uintptr(unsafe.Pointer(me)),
+	)
+	return ret != 0
+}
+
+func Process32First(snapshot HANDLE, pe *PROCESSENTRY32) bool {
+	ret, _, _ := process32Firs.Call(
+		uintptr(snapshot),
+		uintptr(unsafe.Pointer(pe)),
+	)
+	return ret != 0
+}
+
+func Process32Next(snapshot HANDLE, pe *PROCESSENTRY32) bool {
+	ret, _, _ := process32Next.Call(
+		uintptr(snapshot),
+		uintptr(unsafe.Pointer(pe)),
 	)
 	return ret != 0
 }
