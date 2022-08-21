@@ -215,6 +215,7 @@ var (
 	sendDlgItemMessage               = user32.NewProc("SendDlgItemMessageW")
 	lookupIconIdFromDirectoryEx      = user32.NewProc("LookupIconIdFromDirectoryEx")
 	setForegroundWindow              = user32.NewProc("SetForegroundWindow")
+	switchToThisWindow               = user32.NewProc("SwitchToThisWindow")
 	scrollWindow                     = user32.NewProc("ScrollWindow")
 	getFocus                         = user32.NewProc("GetFocus")
 	printWindow                      = user32.NewProc("PrintWindow")
@@ -2068,6 +2069,14 @@ func LookupIconIdFromDirectoryEx(mem unsafe.Pointer, icon bool, width, height in
 func SetForegroundWindow(window HWND) bool {
 	ret, _, _ := setForegroundWindow.Call(uintptr(window))
 	return ret != 0
+}
+
+func SwitchToThisWindow(window HWND, unknown bool) {
+	switchToThisWindow.Call(
+		uintptr(window),
+		uintptr(BoolToBOOL(unknown)),
+	)
+	return
 }
 
 func ScrollWindow(window HWND, dx, dy int, r, clip *RECT) bool {
