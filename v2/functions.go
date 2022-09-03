@@ -224,6 +224,7 @@ var (
 	createCursor                     = user32.NewProc("CreateCursor")
 	destroyCursor                    = user32.NewProc("DestroyCursor")
 	getDlgCtrlID                     = user32.NewProc("GetDlgCtrlID")
+	attachThreadInput                = user32.NewProc("AttachThreadInput")
 
 	regCreateKeyEx             = advapi32.NewProc("RegCreateKeyExW")
 	regOpenKeyEx               = advapi32.NewProc("RegOpenKeyExW")
@@ -363,6 +364,7 @@ var (
 	mulDiv                     = kernel32.NewProc("MulDiv")
 	getConsoleWindow           = kernel32.NewProc("GetConsoleWindow")
 	getCurrentThread           = kernel32.NewProc("GetCurrentThread")
+	getCurrentThreadId         = kernel32.NewProc("GetCurrentThreadId")
 	getLogicalDrives           = kernel32.NewProc("GetLogicalDrives")
 	getDriveType               = kernel32.NewProc("GetDriveTypeW")
 	getUserDefaultLCID         = kernel32.NewProc("GetUserDefaultLCID")
@@ -3637,6 +3639,20 @@ func GetConsoleWindow() HWND {
 func GetCurrentThread() HANDLE {
 	ret, _, _ := getCurrentThread.Call()
 	return HANDLE(ret)
+}
+
+func GetCurrentThreadId() DWORD {
+	ret, _, _ := getCurrentThreadId.Call()
+	return uint32(ret)
+}
+
+func AttachThreadInput(idAttach DWORD, idAttachTo DWORD, fAttach bool) bool {
+	ret, _, _ := attachThreadInput.Call(
+		uintptr(idAttach),
+		uintptr(idAttachTo),
+		uintptr(BoolToBOOL(fAttach)),
+	)
+	return ret != 0
 }
 
 func GetLogicalDrives() uint32 {
